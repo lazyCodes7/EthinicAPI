@@ -61,7 +61,9 @@ jobs:
           path: .
           
       - name: Test OpenCV Installation
-        run: python3 -c "import cv2; print(cv2.__version__)"
+        run: |
+          pip install opencv-python
+          python3 -c "import cv2; print(cv2.__version__)"
           
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
