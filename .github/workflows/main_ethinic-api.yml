@@ -29,6 +29,12 @@ jobs:
 
     - name: Install dependencies
       run: pip install -r requirements.txt
+      
+    - name: Install apt-packages
+      run: |
+        sudo apt-get update
+        sudo apt install python3-opencv
+        python3 -c "import cv2; print(cv2.__version__)"
 
     # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
@@ -53,7 +59,10 @@ jobs:
         with:
           name: python-app
           path: .
-
+          
+      - name: Test OpenCV Installation
+        run: python3 -c "import cv2; print(cv2.__version__)"
+          
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
