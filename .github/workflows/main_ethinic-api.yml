@@ -62,7 +62,6 @@ jobs:
           
       - name: Test OpenCV Installation
         run: |
-          pip install opencv-python
           python3 -c "import cv2; print(cv2.__version__)"
           
       - name: 'Deploy to Azure Web App'
