@@ -3,7 +3,7 @@ from flask_restful import reqparse, abort, Api, Resource
 import pickle
 import numpy as np
 import werkzeug
-from RaceClassifier import *
+from classifier.RaceClassifier import *
 app = Flask(__name__)
 api = Api(app)
 
