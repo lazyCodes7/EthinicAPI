@@ -1,6 +1,7 @@
 -f https://download.pytorch.org/whl/torch_stable.html
 torchvision==0.9.1+cpu
 torch==1.8.1+cpu
+opencv-python
 Flask==2.0.1
 Flask_RESTful==0.3.9
 Werkzeug==2.0.1
