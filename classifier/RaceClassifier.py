@@ -8,7 +8,6 @@ import torch.nn as nn
 import numpy as np
 import torchvision
 from torchvision import datasets, models, transforms
-import dlib
 import os
 import argparse
 import cv2
