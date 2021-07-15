@@ -38,6 +38,7 @@ class RaceClassifier:
             ])
             # img pth of face images
             # list within a list. Each sublist contains scores for all races. Take max for predicted race
+            # image = cv2.imread(cvImage) 
             image = cv2.cvtColor(cvImage, cv2.COLOR_BGR2RGB)        
             image = trans(image)
             image = image.view(1, 3, 224, 224)  # reshape image to match model dimensions (1 batch size)
