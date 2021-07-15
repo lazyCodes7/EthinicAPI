@@ -105,6 +105,9 @@ from classifier.RaceClassifier import *
 clf = RaceClassifer(model_path="fair_face_models/res34_fair_align_multi_7_20190809.pt")
 clf.predict(image_path="path to your desired image")
 ```
+## Output
+![georgina](https://user-images.githubusercontent.com/53506835/125807475-e8c237a8-dff9-4e13-ac9f-fbddeab5626c.jpg)
+![output-img!](https://user-images.githubusercontent.com/53506835/125807236-319d9207-8ae5-47df-978d-d44a1379ccaa.png)
 
 <!-- ROADMAP -->
 ## Roadmap
