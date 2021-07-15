@@ -1,8 +1,1 @@
-libsm6
-libxrender1
-libfontconfig1
-libice6
-libxext6
-ffmpeg
-libxrender1
-libgl1-mesa-glx
+libgl1-mesa-dev
