@@ -60,4 +60,4 @@ class RaceClassifier:
             gender_pred = np.argmax(gender_score)
             age_pred = np.argmax(age_score)
 
-            return int(race_pred)
+            return (race_pred,gender_pred,age_pred)

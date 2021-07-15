@@ -62,9 +62,9 @@ class PredictRace(Resource):
         img_arr = np.asarray(img)      
         print('img shape', img_arr.shape)'''
         if (request.method == 'POST'):
+            output = {}
             file = request.files['file'] 
             if file:
-                ethinicity_pred = []
                 # Loading the haar-cascade face detector
                 face_cascade = cv2.CascadeClassifier('detectors/haarcascade_frontalface_default.xml')
                 # Reading the image sent by the user.
@@ -72,16 +72,17 @@ class PredictRace(Resource):
                 # Detecting the faces in the image
                 faces = face_cascade.detectMultiScale(img, 1.2, 2)
                 # Looping over the faces and getting the ROI
-                for (x,y,w,h) in faces:
+                for i,(x,y,w,h) in enumerate(faces):
                     roi = img[y:y+h, x:x+w]
                     # Passing the ROI to our model
-                    prediction = model.predict(roi)
+                    race_prediction, gender_prediction, age_prediction = model.predict(roi)
                     # Getting the ethinicity related to the index passed
-                    ethinicity = PredictRace.getEthinicity(prediction)
-                    ethinicity_pred.append(ethinicity)
+                    ethinicity = PredictRace.getEthinicity(race_prediction)
+                    gender = PredictRace.getGender(gender_prediction)
+                    age = PredictRace.getAge(age_prediction)
+                    # Prepare the output
+                    output['Face {}'.format(i)] = {'ethinicity' : ethinicity, 'gender' : gender, 'age' : age }
 
-                #  Final output consisting of all the races to be returned as a json response
-                output = {'pred_race': ethinicity_pred}
                 return output
 
     # Static method for predicting the ethinicity based on index passed
@@ -101,6 +102,34 @@ class PredictRace(Resource):
             pred_text = "Indian"
         elif(prediction == 6):
             pred_text = "Middle Eastern"
+        return pred_text
+    @staticmethod
+    def getGender(prediction):
+        if(prediction == 0):
+            pred_text = "Male"
+        elif(prediction == 1):
+            pred_text = "Female"
+        return pred_text
+    @staticmethod
+    def getAge(prediction):
+        if(prediction == 0):
+            pred_text = "0-2"
+        elif(prediction == 1):
+            pred_text = "3-9"
+        elif(prediction == 2):
+            pred_text = "10-19"
+        elif(prediction == 3):
+            pred_text = "20-29"
+        elif(prediction == 4):
+            pred_text = "30-39"
+        elif(prediction == 5):
+            pred_text = "40-49"
+        elif(prediction == 6):
+            pred_text = "50-59"
+        elif(prediction == 7):
+            pred_text = "60-69"
+        elif(prediction == 8):
+            pred_text = "70+"
         return pred_text
         
 api.add_resource(PredictRace, '/predict')
