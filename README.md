@@ -94,7 +94,7 @@ Make sure to have virtualenv package from python installed before proceeding to 
 <!-- USAGE EXAMPLES -->
 ## Usage
 1. Use on postman
-The API can be accessed at the following [endpoint](https://ethinic-api.herokuapp.com/predict) on Postman by making a POST request in the following way.
+The API can be accessed at the following ![endpoint](https://ethinic-api.herokuapp.com/predict) on Postman by making a POST request in the following way.
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/53506835/125794643-8768c100-3047-4d52-b9d8-d65c882f04a6.gif)
 
 2. Use the RaceClassifier inside the 'classifier' directory to make predictions
