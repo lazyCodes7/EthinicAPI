@@ -61,27 +61,37 @@ class PredictRace(Resource):
         # PIL image object to numpy array
         img_arr = np.asarray(img)      
         print('img shape', img_arr.shape)'''
+        eye_cascade = cv2.CascadeClassifier('detectors/haarcascade_eye.xml')
+        face_cascade = cv2.CascadeClassifier('detectors/haarcascade_frontalface_default.xml')
+    
         if (request.method == 'POST'):
             output = {}
             file = request.files['file'] 
             if file:
-                # Loading the haar-cascade face detector
-                face_cascade = cv2.CascadeClassifier('detectors/haarcascade_frontalface_default.xml')
-                # Reading the image sent by the user.
-                img = cv2.imdecode(np.frombuffer(file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
-                # Detecting the faces in the image
-                faces = face_cascade.detectMultiScale(img, 1.2, 2)
-                # Looping over the faces and getting the ROI
-                for i,(x,y,w,h) in enumerate(faces):
-                    roi = img[y:y+h, x:x+w]
-                    # Passing the ROI to our model
-                    race_prediction, gender_prediction, age_prediction = model.predict(roi)
-                    # Getting the ethinicity related to the index passed
-                    ethinicity = PredictRace.getEthinicity(race_prediction)
-                    gender = PredictRace.getGender(gender_prediction)
-                    age = PredictRace.getAge(age_prediction)
-                    # Prepare the output
-                    output['Face {}'.format(i)] = {'ethinicity' : ethinicity, 'gender' : gender, 'age' : age }
+                try:
+                    # Reading the image sent by the user.
+                    img = cv2.imdecode(np.frombuffer(file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+                    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                    gray = cv2.bilateralFilter(gray,5,1,1)
+                    # Detecting the faces in the image
+                    faces = face_cascade.detectMultiScale(gray, 1.2, 10)
+                    
+                    faces = faces[faces[:, 0].argsort()]
+                    # Looping over the faces and getting the ROI
+                    for i,(x,y,w,h) in enumerate(faces):
+                        roi = img[y:y+h, x:x+w]
+                        eyes = eye_cascade.detectMultiScale(roi)
+                        if(len(eyes)>0):
+                            # Passing the ROI to our model
+                            race_prediction, gender_prediction, age_prediction = model.predict(roi)
+                        # Getting the ethinicity related to the index passed
+                        ethinicity = PredictRace.getEthinicity(race_prediction)
+                        gender = PredictRace.getGender(gender_prediction)
+                        age = PredictRace.getAge(age_prediction)
+                        # Prepare the output
+                        output['Face {}'.format(i)] = {'ethinicity' : ethinicity, 'gender' : gender, 'age' : age }
+                except:
+                    return {"error": "We could not detect any faces. Please try another image"}
 
                 return output
 
